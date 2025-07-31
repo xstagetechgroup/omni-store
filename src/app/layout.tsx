@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "OmniStore - by BPA",
+  title: "OmniBox Store - by BPA-Inovações",
   description: "Loja para venda de produtos digitais pelo grupo BPA-Inovações",
 };
 
