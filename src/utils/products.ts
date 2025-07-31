@@ -1,0 +1,42 @@
+export const products = [
+    {
+        title: "Netflix Gift Card",
+        price: "$29.90",
+        rating: "5.0",
+        reviews: "1.2k",
+        category: "Streaming",
+        image: '/assets/netflix.webp',
+    },
+    {
+        title: "Spotify Gift Card",
+        price: "$12.00",
+        rating: "5.0",
+        reviews: "1.2k",
+        category: "Musica",
+        image: '/assets/spotify.webp',
+    },
+    {
+        title: "Playstation Gift Card",
+        price: "$29.90",
+        rating: "4.4",
+        reviews: "1k",
+        category: "Jogos",
+        image: '/assets/PlayStation.png',
+    },
+    {
+        title: "Nintendo Gift Card",
+        price: "$50.00",
+        rating: "4.8",
+        reviews: "120",
+        category: "Jogos",
+        image: '/assets/nintendo.webp',
+    },
+    {
+        title: "Steam Gift Card",
+        price: "$9.90",
+        rating: "5.0",
+        reviews: "1.2k",
+        category: "Jogos",
+        image: '/assets/steam.webp',
+    },
+];
