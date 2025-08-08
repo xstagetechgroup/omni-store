@@ -6,7 +6,6 @@ import RecomendedProducts from "@/components/recomendations";
 import Container from "@/components/shared/container";
 import Footer from "@/components/shared/footer";
 import Navbar from "@/components/shared/navbar";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import Image from "next/image";
 
 export default function Home() {

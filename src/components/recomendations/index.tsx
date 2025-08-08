@@ -6,8 +6,7 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-import { ArrowLeft, ArrowRight, ShoppingCart, Star } from 'lucide-react';
-import { Button } from '../ui/button';
+import { ArrowLeft, ArrowRight, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { products } from '@/utils/products';
 import Link from 'next/link';
@@ -43,11 +42,11 @@ const RecomendedProducts: React.FC = () => {
                     >
                         {products.map((product, index) => (
                             <SwiperSlide key={index}>
-                                <div key={product.title}>
+                                <div key={product.title} className='group'>
 
-                                    <div className="w-full flex justify-center items-center bg-slate-200 mb-4 rounded-lg aspect-square relative">
+                                    <div className="w-full flex justify-center items-center bg-slate-200 mb-4 rounded-lg aspect-square relative overflow-hidden">
                                         <div className="absolute top-4 right-4 text-base bg-white inline-block px-3 py-1 rounded-full mb-2 border border-gray-300">{product.category}</div>
-                                        <Image width={150} height={150} alt="Product" src={product.image} className=" object-cover" />
+                                        <Image width={150} height={150} alt="Product" src={product.image} className=" object-cover transition-transform duration-300 ease-in-out group-hover:scale-110" />
                                     </div>
 
                                     <h3 className="text-lg font-semibold">{product.title}</h3>
