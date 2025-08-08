@@ -1,7 +1,7 @@
 export const products = [
     {
         title: "Netflix Gift Card",
-        price: "$29.90",
+        price: "29 900,00",
         rating: "5.0",
         reviews: "1.2k",
         category: "Streaming",

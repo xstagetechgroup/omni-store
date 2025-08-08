@@ -20,19 +20,23 @@ export default function ProductGrid() {
                 {products.map((product) => (
                     <div key={product.title}>
 
-                        <div className="w-full flex justify-center items-center bg-gray-200 mb-4 rounded-lg aspect-square relative">
+                        <div className="w-full flex justify-center items-center bg-slate-200 mb-4 rounded-lg aspect-square relative">
                             <div className="absolute top-4 right-4 text-base bg-white inline-block px-3 py-1 rounded-full mb-2 border border-gray-300">{product.category}</div>
                             <Image width={150} height={150} alt="Product" src={product.image} className=" object-cover" />
                         </div>
 
                         <h3 className="text-lg font-semibold">{product.title}</h3>
-                        <p className="text-gray-600 text-sm">
-                            ⭐ {product.rating} ({product.reviews} Visualizações)
-                        </p>
-                        <p className="font-bold text-lg mt-1">{product.price}</p>
+                        
+                        <div className="w-full flex justify-between items-center">
+                            <p className="text-gray-600 text-sm">
+                                ⭐ {product.rating} ({product.reviews} Visualizações)
+                            </p>
+                            <p className="font-bold text-xl mt-1 ">{product.price} AKZ</p>
+                        </div>
+
                         <div className="flex gap-2 mt-3 justify-between items-center">
                             <button className="p-3 border rounded-full cursor-pointer flex items-center justify-center"><ShoppingCart /></button>
-                            <Link href={'/carrinho'} className="px-4 py-3 bg-black text-white rounded-full text-sm">
+                            <Link href={'/carrinho'} className="px-4 py-3 text-white bg-black duration-300 rounded-full text-sm hover:bg-[#732DFF] cursor-pointer">
                                 Comprar Agora
                             </Link>
                         </div>

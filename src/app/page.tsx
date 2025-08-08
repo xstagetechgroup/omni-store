@@ -1,7 +1,10 @@
 import { CategorySidebar } from "@/components/categorySidebar";
 import SearchForm from "@/components/form/search-form";
+import NewslatterSection from "@/components/newslatter";
 import ProductGrid from "@/components/productGrid";
+import RecomendedProducts from "@/components/recomendations";
 import Container from "@/components/shared/container";
+import Footer from "@/components/shared/footer";
 import Navbar from "@/components/shared/navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import Image from "next/image";
@@ -37,6 +40,10 @@ export default function Home() {
         </div>
       </Container>
 
+      <RecomendedProducts />
+
+      <NewslatterSection />
+      <Footer />
     </div>
   );
 }

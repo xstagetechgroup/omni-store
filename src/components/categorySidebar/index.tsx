@@ -7,36 +7,36 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 
 const categoryItems = [
   {
-    title: "All Product",
+    title: "Todos Produtos",
     icon: Package,
     badge: "32",
     hasSubmenu: true,
     subitems: [
-      { title: "Electronics", count: 15 },
-      { title: "Clothing", count: 8 },
-      { title: "Books", count: 9 },
+      { title: "Eletronicos", count: 15 },
+      { title: "Roupas", count: 8 },
+      { title: "Livros", count: 9 },
     ],
   },
   {
-    title: "New Arrival",
+    title: "Novos Produtos",
     icon: Sparkles,
     hasSubmenu: true,
     subitems: [
-      { title: "This Week", count: 5 },
-      { title: "This Month", count: 12 },
+      { title: "Esta Semana", count: 5 },
+      { title: "Este Mês", count: 12 },
     ],
   },
   {
-    title: "Best Seller",
+    title: "Mais Vendidos",
     icon: TrendingUp,
     hasSubmenu: true,
     subitems: [
       { title: "Top 10", count: 10 },
-      { title: "Most Popular", count: 25 },
+      { title: "Mais Populares", count: 25 },
     ],
   },
   {
-    title: "On Discount",
+    title: "Com Disconto",
     icon: Percent,
     hasSubmenu: true,
     subitems: [
@@ -55,7 +55,7 @@ export function CategorySidebar() {
 
   return (
     <div className="w-64 bg-white">
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">Category</h3>
+      <h3 className="text-xl font-semibold text-gray-900 mb-4">Categorias</h3>
 
       <div className="space-y-1">
         {categoryItems.map((item) => (
