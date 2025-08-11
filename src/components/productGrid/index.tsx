@@ -1,71 +1,144 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { products } from "@/utils/products";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Loader2 } from "lucide-react";
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-} from "@/components/ui/pagination"
+} from "@/components/ui/pagination";
+import { TProduct } from "@/types/product";
 
 export default function ProductGrid() {
+    const itemsPerPage = 9;
+    const [currentPage, setCurrentPage] = useState(1);
+    const [currentProducts, setCurrentProducts] = useState<TProduct[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+
+    // Ref para o topo da lista
+    const listTopRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setLoading(true);
+
+        // Faz o scroll suave até o topo da lista
+        if (listTopRef.current) {
+            listTopRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        const timer = setTimeout(() => {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            setCurrentProducts(products.slice(startIndex, endIndex));
+            setLoading(false);
+        }, 1500);
+
+        return () => clearTimeout(timer);
+    }, [currentPage]);
+
+    const goToPage = (page: number) => {
+        if (page > 0 && page <= totalPages) {
+            setCurrentPage(page);
+        }
+    };
+
     return (
         <div className="w-full flex flex-col gap-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product) => (
-                    <div key={product.title} className="group">
+            {/* Ref para o topo */}
+            <div ref={listTopRef}></div>
 
-                        <div className="w-full flex justify-center items-center bg-slate-200 mb-4 rounded-lg aspect-square relative overflow-hidden">
-                            <div className="absolute top-4 right-4 text-base bg-white inline-block px-3 py-1 rounded-full mb-2 border border-gray-300">{product.category}</div>
-                            <Image width={150} height={150} alt="Product" src={product.image} className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-110" />
-                        </div>
-
-                        <h3 className="text-lg font-semibold">{product.title}</h3>
-                        
-                        <div className="w-full flex justify-between items-center">
-                            <p className="text-gray-600 text-sm">
-                                ⭐ {product.rating} ({product.reviews} Visualizações)
-                            </p>
-                            <p className="font-bold text-xl mt-1 ">{product.price} AKZ</p>
-                        </div>
-
-                        <div className="flex gap-2 mt-3 justify-between items-center">
-                            <button className="p-3 border rounded-full cursor-pointer flex items-center justify-center"><ShoppingCart /></button>
-                            <Link href={'/carrinho'} className="px-4 py-3 text-white bg-black duration-300 rounded-full text-sm hover:bg-[#732DFF] cursor-pointer">
-                                Comprar Agora
+            {loading ? (
+                <div className="w-full flex justify-center py-10">
+                    <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {currentProducts.map((product) => (
+                        <div key={product.id} className="group">
+                            <Link href={`/produto/${product.id}`}>
+                                <div className="w-full flex justify-center items-center bg-slate-200 mb-4 rounded-lg aspect-square relative overflow-hidden cursor-pointer">
+                                    <div className="absolute top-4 right-4 text-base bg-white inline-block px-3 py-1 rounded-full mb-2 border border-gray-300">
+                                        {product.category}
+                                    </div>
+                                    <Image
+                                        width={150}
+                                        height={150}
+                                        alt={product.title}
+                                        src={product.image}
+                                        className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+                                    />
+                                </div>
                             </Link>
-                        </div>
-                    </div>
-                ))}
-            </div>
 
+                            <h3 className="text-lg font-semibold">{product.title}</h3>
+
+                            <div className="w-full flex justify-between items-center">
+                                <p className="text-gray-600 text-sm">
+                                    ⭐ {product.rating} ({product.reviews} Visualizações)
+                                </p>
+                                <p className="font-bold text-xl mt-1">{product.price} AKZ</p>
+                            </div>
+
+                            <div className="flex gap-2 mt-3 justify-between items-center">
+                                <button className="p-3 border rounded-full cursor-pointer flex items-center justify-center">
+                                    <ShoppingCart />
+                                </button>
+                                <Link
+                                    href={"/carrinho"}
+                                    className="px-4 py-3 text-white bg-black duration-300 rounded-full text-sm hover:bg-[#732DFF] cursor-pointer"
+                                >
+                                    Comprar Agora
+                                </Link>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Paginação */}
             <div className="w-full">
-                <Pagination className="w-full">
+                <Pagination className="w-full justify-center">
                     <PaginationContent>
                         <PaginationItem>
-                            <PaginationPrevious href="#" />
+                            <PaginationPrevious
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    goToPage(currentPage - 1);
+                                }}
+                            />
                         </PaginationItem>
+
+                        {Array.from({ length: totalPages }, (_, i) => (
+                            <PaginationItem key={i}>
+                                <PaginationLink
+                                    href="#"
+                                    isActive={currentPage === i + 1}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        goToPage(i + 1);
+                                    }}
+                                >
+                                    {i + 1}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))}
+
                         <PaginationItem>
-                            <PaginationLink href="#">1</PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem>
-                            <PaginationLink href="#" isActive>
-                                2
-                            </PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem>
-                            <PaginationLink href="#">3</PaginationLink>
-                        </PaginationItem>
-                        <PaginationItem>
-                            <PaginationEllipsis />
-                        </PaginationItem>
-                        <PaginationItem>
-                            <PaginationNext href="#" />
+                            <PaginationNext
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    goToPage(currentPage + 1);
+                                }}
+                            />
                         </PaginationItem>
                     </PaginationContent>
                 </Pagination>

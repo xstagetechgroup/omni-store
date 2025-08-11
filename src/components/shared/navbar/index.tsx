@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Container from '../container';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Menu, Search, ShoppingCart, X } from 'lucide-react';
@@ -11,14 +10,14 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <Container>
-      <nav className='w-full flex justify-between items-center p-5 bg-white rounded-b-lg z-10 relative'>
+    <nav className='w-full fixed top-0 flex justify-center items-start md:px-5 z-50'>
+      <div className='max-w-[1280px] w-full flex justify-between items-center p-5 bg-white md:rounded-b-lg z-50 shadow-md'>
         {/* Logo */}
         <Image width={120} height={100} alt='Omni Store Logo' src='/assets/5.png' />
 
         {/* Links - Desktop */}
         <div className='hidden md:flex gap-5 items-center justify-center'>
-          <Link className='font-medium hover:text-[#732DFF] duration-300' href='/'>Sobre</Link>
+          <Link className='font-medium hover:text-[#732DFF] duration-300' href='/sobre'>Sobre</Link>
           <Link className='font-medium hover:text-[#732DFF] duration-300' href='/'>Loja</Link>
           <Link className='font-medium hover:text-[#732DFF] duration-300' href='/'>Contactos</Link>
         </div>
@@ -61,7 +60,7 @@ export default function Navbar() {
             </div>
           </div>
         )}
-      </nav>
-    </Container>
+      </div>
+    </nav>
   );
 }

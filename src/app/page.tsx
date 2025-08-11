@@ -13,9 +13,7 @@ export default function Home() {
     <div className="">
       <div className="w-full relative h-[600px] flex flex-col justify-between items-center">
 
-        <div className="absolute top-0 w-full">
-          <Navbar />
-        </div>
+        <Navbar />
 
         <Image src={'/assets/home-banner.jpg'} alt={'Home Banner'} width={1000} height={1000} className="w-full h-full object-cover" />
 

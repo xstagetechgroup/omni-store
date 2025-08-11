@@ -44,10 +44,10 @@ const RecomendedProducts: React.FC = () => {
                             <SwiperSlide key={index}>
                                 <div key={product.title} className='group'>
 
-                                    <div className="w-full flex justify-center items-center bg-slate-200 mb-4 rounded-lg aspect-square relative overflow-hidden">
+                                    <Link href={`/produto/${product.id}`} className="w-full flex justify-center items-center bg-slate-200 mb-4 rounded-lg aspect-square relative overflow-hidden">
                                         <div className="absolute top-4 right-4 text-base bg-white inline-block px-3 py-1 rounded-full mb-2 border border-gray-300">{product.category}</div>
                                         <Image width={150} height={150} alt="Product" src={product.image} className=" object-cover transition-transform duration-300 ease-in-out group-hover:scale-110" />
-                                    </div>
+                                    </Link>
 
                                     <h3 className="text-lg font-semibold">{product.title}</h3>
 
