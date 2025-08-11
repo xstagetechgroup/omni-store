@@ -145,8 +145,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                                         <FaWhatsapp className="size-5" />
                                         WhatsApp
                                     </button>
-                                    <Link
-                                        href={"/"}
+                                    <button
+                                        onClick={() => {}}
                                         className="flex-1 bg-[#EC8C0F] hover:bg-[#E66907] text-white py-2 rounded-md flex items-center justify-center gap-2"
                                     >
                                         <Image
@@ -157,13 +157,13 @@ export default function ProductPage({ params }: ProductPageProps) {
                                             className="w-5 h-5"
                                         />
                                         Multicaixa Express
-                                    </Link>
-                                    <Link
-                                        href={"/"}
-                                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md flex items-center justify-center gap-2"
+                                    </button>
+                                    <button
+                                        onClick={() => {}}
+                                        className="flex-1 bg-[#EC8C0F] hover:bg-[#E66907] text-white py-2 rounded-md flex items-center justify-center gap-2"
                                     >
                                         BAI DIRETO
-                                    </Link>
+                                    </button>
                                 </div>
                             )}
 
