@@ -1,23 +1,38 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 import { auth, db } from "@/lib/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 
+// 🔹 Tipagem para os dados extras do Firestore
+export type FirestoreUserData = {
+  displayName?: string;
+  [key: string]: unknown; // caso tenha outros campos dinâmicos
+};
+
+// 🔹 Tipagem para o usuário final que vai para o contexto
+export type AppUser = {
+  uid: string;
+  email: string | null;
+} & FirestoreUserData;
+
 type AuthContextType = {
-  user: any | null;
+  user: AppUser | null;
   loading: boolean;
 };
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  loading: true,
+});
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+    const unsub = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       if (firebaseUser) {
         // pega token atualizado
         const token = await firebaseUser.getIdToken();
@@ -26,13 +41,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // busca dados no Firestore
         const ref = doc(db, "users", firebaseUser.uid);
         const snap = await getDoc(ref);
+
+        let userData: AppUser;
+
         if (snap.exists()) {
-          setUser({ uid: firebaseUser.uid, email: firebaseUser.email, ...snap.data() });
-          localStorage.setItem("user", JSON.stringify({ uid: firebaseUser.uid, email: firebaseUser.email, ...snap.data() }));
+          userData = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            ...snap.data(),
+          } as AppUser;
         } else {
-          setUser({ uid: firebaseUser.uid, email: firebaseUser.email, displayName: firebaseUser.displayName });
-          localStorage.setItem("user", JSON.stringify({ uid: firebaseUser.uid, email: firebaseUser.email, displayName: firebaseUser.displayName }));
+          userData = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName ?? undefined,
+          };
         }
+
+        setUser(userData);
+        localStorage.setItem("user", JSON.stringify(userData));
       } else {
         localStorage.removeItem("userToken");
         localStorage.removeItem("user");

@@ -13,6 +13,12 @@ import { auth, db } from "@/lib/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 
+type UserData = {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+};
+
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +44,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       const userRef = doc(db, "users", user.uid);
       const snap = await getDoc(userRef);
 
-      let userData: Record<string, any> = {
+      let userData: UserData = {
         uid: user.uid,
         email: user.email,
         displayName: user.displayName ?? null,
@@ -62,9 +68,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
       // 5) redireciona (ajuste conforme sua rota)
       router.push("/");
-    } catch (err: any) {
+    } catch (err: unknown) {
       // mapeia erros comuns do Firebase para mensagens amigáveis
-      const code = err?.code || "";
+      const code = (err as { code?: string })?.code || "";
       let message = "Erro ao fazer login. Tente novamente.";
 
       if (code === "auth/wrong-password") message = "Senha incorreta.";
@@ -72,8 +78,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       else if (code === "auth/invalid-email") message = "Email inválido.";
       else if (code === "auth/too-many-requests")
         message = "Muitas tentativas. Tente mais tarde.";
-      else if (err?.message) message = err.message;
-
+      else if ((err as Error)?.message) message = (err as Error).message;
       setError(message);
     } finally {
       setLoading(false);

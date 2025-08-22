@@ -71,7 +71,7 @@ export default function ExpressPayment({ productData }: ExpressPaymentProps) {
     const [user, setUser] = useState<IUser | null>(null);
     const [loading, setLoading] = useState(false);
 
-    const [referencia, setReferencia] = useState(() => {
+    const [referencia] = useState(() => {
         const randomNumbers = Math.floor(1000000 + Math.random() * 9000000);
         return `BPA${randomNumbers}`;
     });
@@ -171,7 +171,7 @@ export default function ExpressPayment({ productData }: ExpressPaymentProps) {
             <div className="bg-gray-50 border border-gray-100 rounded-lg p-6 mb-6">
                 <div className="text-blue-700 font-medium mb-3">Siga estes passos:</div>
                 <ol className="pl-5 list-decimal space-y-4 text-gray-700">
-                    <li>Abra o seu aplicativo MULTICAIXA EXPRESS e selecione 'Transferência Express'</li>
+                    <li>Abra o seu aplicativo MULTICAIXA EXPRESS e selecione Transferência Express</li>
 
                     <li>
                         Insira o nosso Número de Telemovel e o montante:
@@ -186,7 +186,7 @@ export default function ExpressPayment({ productData }: ExpressPaymentProps) {
                     </li>
 
                     <li>
-                        Insira esta referência no campo "Mensagem (Opcional)":
+                        Insira esta referência no campo Mensagem (Opcional):
                         <div className="flex justify-between items-center mt-2 bg-white border border-blue-200 rounded-md px-4 py-2 font-mono font-bold text-base">
                             {referencia}
                             <CopyButton value={referencia} />
@@ -206,7 +206,7 @@ export default function ExpressPayment({ productData }: ExpressPaymentProps) {
                 <div>
                     <b>Importante:</b>
                     <br />
-                    A compra só será efetuada após clicar no botão "Pagamento Feito" abaixo. Receberá a sua compra em alguns minutos após a confirmação.
+                    A compra só será efetuada após clicar no botão Pagamento Feito abaixo. Receberá a sua compra em alguns minutos após a confirmação.
                 </div>
             </div>
 

@@ -55,8 +55,8 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
 
             alert("Usuário registrado com sucesso!");
             router.push("/login");
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            setError((err as Error).message);
         } finally {
             setLoading(false);
         }

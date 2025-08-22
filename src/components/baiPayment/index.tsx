@@ -72,7 +72,7 @@ export default function BaiPayment({ productData }: BaiPaymentProps) {
     const [user, setUser] = useState<IUser | null>(null);
     const [loading, setLoading] = useState(false);
 
-    const [referencia, setReferencia] = useState(() => {
+    const [referencia] = useState(() => {
         const randomNumbers = Math.floor(1000000 + Math.random() * 9000000);
         return `BPA${randomNumbers}`;
     });
@@ -173,7 +173,7 @@ export default function BaiPayment({ productData }: BaiPaymentProps) {
             <div className="bg-gray-50 border border-gray-100 rounded-lg p-6 mb-6">
                 <div className="text-blue-700 font-medium mb-3">Siga estes passos:</div>
                 <ol className="pl-5 list-decimal space-y-4 text-gray-700">
-                    <li>Abra o seu aplicativo BAI DIRETO e selecione 'Transferências Nacionais'</li>
+                    <li>Abra o seu aplicativo BAI DIRETO e selecione Transferências Nacionais</li>
 
                     <li>
                         Insira o nosso IBAN e o montante:
@@ -213,7 +213,7 @@ export default function BaiPayment({ productData }: BaiPaymentProps) {
                 <div>
                     <b>Importante:</b>
                     <br />
-                    A compra só será efetuada após clicar no botão "Pagamento Feito" abaixo. Receberá a sua compra em alguns minutos após a confirmação.
+                    A compra só será efetuada após clicar no botão Pagamento Feito abaixo. Receberá a sua compra em alguns minutos após a confirmação.
                 </div>
             </div>
 

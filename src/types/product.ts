@@ -2,13 +2,13 @@
 export interface ProductPlan {
   id: string;
   title: string;
-  price: string;
+  price: number;
 }
 
 export interface TProduct {
   id: number;
   title: string;
-  price: string;
+  price: number;
   rating: string;
   reviews: string;
   category: string;
