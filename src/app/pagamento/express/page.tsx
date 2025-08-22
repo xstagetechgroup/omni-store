@@ -1,19 +1,33 @@
 'use client';
+
 import ExpressPayment from '@/components/expressPayment';
 import Container from '@/components/shared/container';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { Suspense } from 'react';
 
-export default function ExpressPage() {
-
+const PaymentContent: React.FC = () => {
     const searchParams = useSearchParams();
     const productTitle = searchParams.get("productTitle");
     const plan = searchParams.get("plan");
     const price = searchParams.get("price");
     const qty = searchParams.get("qty");
 
+    return (
+        <Container>
+            <ExpressPayment
+                productData={{
+                    title: productTitle,
+                    plan,
+                    price: price !== null ? Number(price) : null,
+                    qty: qty !== null ? Number(qty) : null
+                }}
+            />
+        </Container>
+    );
+};
 
+export default function ExpressPage() {
     return (
         <div>
             <div className="w-full h-[300px] bg-gray-700 text-white flex flex-col justify-end pb-10 items-center">
@@ -24,16 +38,11 @@ export default function ExpressPage() {
                     <p>Pagamento</p>
                 </div>
             </div>
-            <Container>
-                <ExpressPayment
-                    productData={{
-                        title: productTitle,
-                        plan,
-                        price: price !== null ? Number(price) : null,
-                        qty: qty !== null ? Number(qty) : null
-                    }}
-                />
-            </Container>
+
+            {/* Suspense para evitar o erro de CSR bailout */}
+            <Suspense fallback={<p className="text-center py-10">Carregando...</p>}>
+                <PaymentContent />
+            </Suspense>
         </div>
     );
 }
