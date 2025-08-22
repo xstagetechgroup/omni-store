@@ -22,5 +22,5 @@ export interface TProduct {
 export type TPlan = {
     id: string;
     title: string;
-    price: string;
+    price: number;
 };

@@ -54,7 +54,7 @@ export default function PlanSelector({ plans, onSelect }: PlanSelectorProps) {
                             <div className="flex-1">
                                 <p className="font-medium">{plan.title}</p>
                             </div>
-                            <span className="font-semibold">{plan.price}</span>
+                            <span className="font-semibold">{plan.price} AKZ</span>
                         </label>
                     ))}
                 </div>
@@ -64,7 +64,7 @@ export default function PlanSelector({ plans, onSelect }: PlanSelectorProps) {
                         <div>
                             <p className="font-medium">{selectedPlan.title}</p>
                         </div>
-                        <span className="font-semibold">{selectedPlan.price}</span>
+                        <span className="font-semibold">{selectedPlan.price} AKZ</span>
                     </div>
                 )
             )}

@@ -6,11 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PlanSelector from "@/components/planSelector";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TPlan } from "@/types/product";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
 import RecomendedProducts from "@/components/recomendations";
+import { useRouter } from "next/navigation";
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { app } from "@/lib/firebaseConfig";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 
 interface ProductPageProps {
@@ -18,12 +22,25 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-    const { id } = React.use(params); // ✅ Desembrulha o params
+    const { id } = React.use(params); // Extrai o ID do produto da promise
     const productId = parseInt(id);
-    const product = products.find((p) => p.id === productId);
-    const [selectedPlan, setSelectedPlan] = useState<TPlan | undefined>(product?.plans[0]);
+    const product = products.find((p) => p.id === productId); // Busca o produto pelo ID
+    const [selectedPlan, setSelectedPlan] = useState<TPlan | undefined>(product?.plans[0]); // Define o plano selecionado inicialmente
     const [quantity, setQuantity] = useState(1);
     const [showOptions, setShowOptions] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const router = useRouter();
+
+    // 🔑 verificar login no Firebase
+    useEffect(() => {
+        const auth = getAuth(app);
+        const unsub = onAuthStateChanged(auth, (user) => {
+            setIsLoggedIn(!!user);
+        });
+        return () => unsub();
+    }, []);
 
     if (!product) {
         return notFound(); // Redireciona para página 404 do Next se não encontrar
@@ -34,6 +51,35 @@ export default function ProductPage({ params }: ProductPageProps) {
 
     const handlePlanSelect = (plan: TPlan) => {
         setSelectedPlan(plan);
+    };
+
+    const goToExpressPayment = () => {
+        if (!product || !selectedPlan) return;
+
+        if (!isLoggedIn) {
+            setOpenDialog(true); // se não estiver logado, mostra alerta
+            return;
+        }
+
+        router.push(`/pagamento/express?productTitle=${product.title}&plan=${encodeURIComponent(selectedPlan.title)}&price=${encodeURIComponent(selectedPlan.price)}&qty=${quantity}`);
+    };
+
+    const goToBaiPayment = () => {
+        if (!product || !selectedPlan) return;
+
+        if (!isLoggedIn) {
+            setOpenDialog(true); // se não estiver logado, mostra alerta
+            return;
+        }
+
+        router.push(`/pagamento/baidireto?productTitle=${product.title}&plan=${encodeURIComponent(selectedPlan.title)}&price=${encodeURIComponent(selectedPlan.price)}&qty=${quantity}`);
+    };
+
+
+
+    const handleLoginRedirect = () => {
+        setOpenDialog(false);
+        router.push("/login");
     };
 
 
@@ -91,7 +137,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                         <p className="text-xs font-medium text-gray-500">{product.about}</p>
 
                         <div className="w-full flex flex-col p-5 bg-gray-50 rounded-lg">
-                            <p className="text-3xl font-bold">{product.plans && product.plans.length > 0 ? selectedPlan?.price : product.price}</p>
+                            <p className="text-3xl font-bold">{product.plans && product.plans.length > 0 ? selectedPlan?.price : product.price} AKZ</p>
                             <span className="flex text-green-500 text-xs items-center gap-1">
                                 <Check className="size-5 pt-1" />
                                 <p>Em estoque • Envio imediato</p>
@@ -140,14 +186,14 @@ export default function ProductPage({ params }: ProductPageProps) {
                                 <div className="flex flex-col sm:flex-row gap-2">
                                     <button
                                         onClick={handleWhatsAppClick}
-                                        className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md flex items-center justify-center gap-2"
+                                        className="flex-1 cursor-pointer bg-green-600 hover:bg-green-700 text-white py-2 rounded-md flex items-center justify-center gap-2"
                                     >
                                         <FaWhatsapp className="size-5" />
                                         WhatsApp
                                     </button>
                                     <button
-                                        onClick={() => {}}
-                                        className="flex-1 bg-[#EC8C0F] hover:bg-[#E66907] text-white py-2 rounded-md flex items-center justify-center gap-2"
+                                        onClick={goToExpressPayment}
+                                        className="flex-1 cursor-pointer bg-[#EC8C0F] hover:bg-[#E66907] text-white py-2 rounded-md flex items-center justify-center gap-2"
                                     >
                                         <Image
                                             src={"/assets/express-logo.png"}
@@ -159,21 +205,39 @@ export default function ProductPage({ params }: ProductPageProps) {
                                         Multicaixa Express
                                     </button>
                                     <button
-                                        onClick={() => {}}
-                                        className="flex-1 bg-[#EC8C0F] hover:bg-[#E66907] text-white py-2 rounded-md flex items-center justify-center gap-2"
+                                        onClick={goToBaiPayment}
+                                        className="flex-1 cursor-pointer bg-[#00A1E0] hover:bg-[#001A48] text-white py-2 rounded-md flex items-center justify-center gap-2"
                                     >
                                         BAI DIRETO
                                     </button>
                                 </div>
                             )}
 
+
+
                             {/* Adicionar ao carrinho */}
-                            <button className="w-full border border-gray-300 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-gray-50">
+                            <button className="w-full cursor-pointer border border-gray-300 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-gray-200">
                                 <ShoppingCart size={18} />
                                 Adicionar ao Carrinho
                             </button>
                         </div>
-
+                        {/* AlertDialog do Shadcn */}
+                        <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Login necessário</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        Para continuar com o pagamento via Multicaixa Express, você precisa estar logado na sua conta.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                    <AlertDialogAction onClick={handleLoginRedirect}>
+                                        Fazer Login
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </div>
                 </div>
                 <RecomendedProducts />

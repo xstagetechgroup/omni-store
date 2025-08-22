@@ -2,7 +2,7 @@ const baseProducts = [
     {
         id: 1,
         title: "Netflix Gift Card",
-        price: "",
+        price: 8500,
         rating: "5.0",
         reviews: "1.2k",
         category: "Streaming",
@@ -15,29 +15,29 @@ const baseProducts = [
             {
                 id: "mobile",
                 title: "Mobile - Um dispositivo móvel | 480p (SD)",
-                price: "8 500 Kz",
+                price: 8500,
             },
             {
                 id: "base",
                 title: "Base - Um dispositivo | 720p (HD)",
-                price: "10 000 Kz",
+                price: 10000,
             },
             {
                 id: "premium",
                 title: "Standard - Dois dispositivos | 1080p (Full HD)",
-                price: "15 000 Kz",
+                price: 15000,
             },
             {
                 id: "standard",
                 title: "Premium - Quatro dispositivos | 4K + HDR",
-                price: "18 000 Kz",
+                price: 18000,
             },
         ]
     },
     {
         id: 2,
         title: "Spotify Gift Card",
-        price: "$12.00",
+        price: 12.00,
         rating: "5.0",
         reviews: "1.2k",
         category: "Musica",
@@ -50,7 +50,7 @@ const baseProducts = [
     {
         id: 3,
         title: "Playstation Gift Card",
-        price: "$29.90",
+        price: 29.90,
         rating: "4.4",
         reviews: "1k",
         category: "Jogos",
@@ -63,7 +63,7 @@ const baseProducts = [
     {
         id: 4,
         title: "Nintendo Gift Card",
-        price: "$50.00",
+        price: 50.00,
         rating: "4.8",
         reviews: "120",
         category: "Jogos",
@@ -76,7 +76,7 @@ const baseProducts = [
     {
         id: 5,
         title: "Steam Gift Card",
-        price: "$9.90",
+        price: 9.90,
         rating: "5.0",
         reviews: "1.2k",
         category: "Jogos",
