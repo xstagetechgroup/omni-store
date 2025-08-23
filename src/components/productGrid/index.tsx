@@ -28,11 +28,6 @@ export default function ProductGrid() {
     useEffect(() => {
         setLoading(true);
 
-        // Faz o scroll suave até o topo da lista
-        if (listTopRef.current) {
-            listTopRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-
         const timer = setTimeout(() => {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
