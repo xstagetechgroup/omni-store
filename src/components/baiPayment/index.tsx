@@ -14,6 +14,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 interface BaiPaymentProps {
     productData?: {
@@ -125,6 +126,7 @@ export default function BaiPayment({ productData }: BaiPaymentProps) {
 
         setLoading(true);
         try {
+            // --- Enviar email ---
             const res = await fetch("/api/send-payment-email", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -141,6 +143,26 @@ export default function BaiPayment({ productData }: BaiPaymentProps) {
             });
 
             const data = await res.json();
+
+            // --- Salvar no Firestore ---
+            const docRef = await addDoc(collection(db, "orders"), {
+                userId: user.uid,
+                userName: user.name,
+                userEmail: user.email,
+                userPhone: user.phone ?? null,
+                product: productData,
+                bankData: {
+                    iban: IBAN,
+                    valor: (productData?.price ?? 0) * (productData?.qty ?? 0),
+                    beneficiario: BENEFICIARIO,
+                    referencia,
+                },
+                status: "pending", // você pode criar um fluxo: pending, paid, shipped...
+                createdAt: serverTimestamp(),
+            });
+
+            console.log("Document written with ID: ", docRef.id);
+
             if (data.success) {
                 setOpenDialog("success");
             } else {
@@ -148,7 +170,7 @@ export default function BaiPayment({ productData }: BaiPaymentProps) {
             }
         } catch (err) {
             console.error(err);
-            alert("Erro ao enviar pagamento.");
+            setOpenDialog("error");
         }
         setLoading(false);
     };

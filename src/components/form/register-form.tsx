@@ -40,6 +40,9 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
             // 2 - Atualiza nome no perfil do Auth
             await updateProfile(user, { displayName: name });
 
+            // 🔑 Garante que o token atualizado esteja disponível
+            await user.getIdToken(true);
+
             // 3 - Salva dados adicionais no Firestore
             await setDoc(doc(db, "users", user.uid), {
                 name,

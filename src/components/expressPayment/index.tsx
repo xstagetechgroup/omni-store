@@ -14,6 +14,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+
 
 interface ExpressPaymentProps {
     productData?: {
@@ -117,13 +119,14 @@ export default function ExpressPayment({ productData }: ExpressPaymentProps) {
     }, []);
 
     const handlePaymentDone = async () => {
-        if (!user || user === null) {
+        if (!user) {
             alert("Você precisa estar logado para confirmar o pagamento.");
             return;
         }
 
         setLoading(true);
         try {
+            // --- Enviar email ---
             const res = await fetch("/api/send-payment-email", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -134,11 +137,30 @@ export default function ExpressPayment({ productData }: ExpressPaymentProps) {
                         iban: IBAN,
                         valor: (productData?.price ?? 0) * (productData?.qty ?? 0),
                         referencia,
-                    }
-                })
+                    },
+                }),
             });
 
             const data = await res.json();
+
+            // --- Salvar no Firestore ---
+            const docRef = await addDoc(collection(db, "orders"), {
+                userId: user.uid,
+                userName: user.name,
+                userEmail: user.email,
+                userPhone: user.phone ?? null,
+                product: productData,
+                bankData: {
+                    iban: IBAN,
+                    valor: (productData?.price ?? 0) * (productData?.qty ?? 0),
+                    referencia,
+                },
+                status: "pending", // você pode criar um fluxo: pending, paid, shipped...
+                createdAt: serverTimestamp(),
+            });
+
+            console.log("Document written with ID: ", docRef.id);
+
             if (data.success) {
                 setOpenDialog("success");
             } else {
@@ -146,7 +168,7 @@ export default function ExpressPayment({ productData }: ExpressPaymentProps) {
             }
         } catch (err) {
             console.error(err);
-            alert("Erro ao enviar pagamento.");
+            setOpenDialog("error");
         }
         setLoading(false);
     };
