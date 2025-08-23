@@ -137,7 +137,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                         <p className="text-xs font-medium text-gray-500">{product.about}</p>
 
                         <div className="w-full flex flex-col p-5 bg-gray-50 rounded-lg">
-                            <p className="text-3xl font-bold">{product.plans && product.plans.length > 0 ? selectedPlan?.price : product.price} AKZ</p>
+                            <p className="text-3xl font-bold">{product.plans && product.plans.length > 0 ? Number(selectedPlan?.price).toLocaleString("pt-BR") : Number(product.price).toLocaleString("pt-BR")} AKZ</p>
                             <span className="flex text-green-500 text-xs items-center gap-1">
                                 <Check className="size-5 pt-1" />
                                 <p>Em estoque • Envio imediato</p>

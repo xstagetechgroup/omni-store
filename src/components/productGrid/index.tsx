@@ -78,7 +78,7 @@ export default function ProductGrid() {
                                 <p className="text-gray-600 text-sm">
                                     ⭐ {product.rating} ({product.reviews} Visualizações)
                                 </p>
-                                <p className="font-bold text-xl mt-1">{product.price} AKZ</p>
+                                <p className="font-bold text-xl mt-1">{Number(product.price).toLocaleString("pt-BR")} AKZ</p>
                             </div>
 
                             <div className="flex gap-2 mt-3 justify-between items-center">

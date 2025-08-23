@@ -199,8 +199,10 @@ export default function ExpressPayment({ productData }: ExpressPaymentProps) {
                             <CopyButton value={IBAN} />
                         </div>
                         <div className="flex justify-between items-center mt-2 bg-white border border-blue-200 rounded-md px-4 py-2 font-bold text-base">
-                            {(productData?.price ?? 0) * (productData?.qty ?? 0)} AKZ
-                            <CopyButton value={((productData?.price ?? 0) * (productData?.qty ?? 0)).toString()} />
+                            {((productData?.price ?? 0) * (productData?.qty ?? 0)).toLocaleString("pt-BR")} AKZ
+                            <CopyButton
+                                value={((productData?.price ?? 0) * (productData?.qty ?? 0)).toString()}
+                            />
                         </div>
                     </li>
 
