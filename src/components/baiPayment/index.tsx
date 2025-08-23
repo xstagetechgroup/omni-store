@@ -5,7 +5,15 @@ import { Button } from '../ui/button';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from "firebase/firestore";
 import { app, db } from '@/lib/firebaseConfig';
-import { toast } from 'sonner';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface BaiPaymentProps {
     productData?: {
@@ -71,6 +79,7 @@ export default function BaiPayment({ productData }: BaiPaymentProps) {
 
     const [user, setUser] = useState<IUser | null>(null);
     const [loading, setLoading] = useState(false);
+    const [openDialog, setOpenDialog] = useState<null | "success" | "error">(null);
 
     const [referencia] = useState(() => {
         const randomNumbers = Math.floor(1000000 + Math.random() * 9000000);
@@ -133,21 +142,9 @@ export default function BaiPayment({ productData }: BaiPaymentProps) {
 
             const data = await res.json();
             if (data.success) {
-                toast("Confirmação Enviada", {
-                    description: "A sua solicitação foi enviada e será atendida brevemente!",
-                    action: {
-                        label: "OK",
-                        onClick: () => console.log("OK"),
-                    },
-                })
+                setOpenDialog("success");
             } else {
-                toast("Erro ao enviar confirmação", {
-                    description: "Ocorreu um erro ao enviar a sua solicitação.",
-                    action: {
-                        label: "OK",
-                        onClick: () => console.log("OK"),
-                    },
-                })
+                setOpenDialog("error");
             }
         } catch (err) {
             console.error(err);
@@ -163,7 +160,7 @@ export default function BaiPayment({ productData }: BaiPaymentProps) {
             window.history.back();
         }
     }
-    
+
     return (
         <div className="w-full my-10 bg-white rounded-lg border border-gray-100 p-6">
             <h2 className="text-2xl font-extrabold mb-6">
@@ -234,6 +231,35 @@ export default function BaiPayment({ productData }: BaiPaymentProps) {
                     Cancelar Compra
                 </Button>
             </div>
+            {/* Dialog de sucesso */}
+            <AlertDialog open={openDialog === "success"} onOpenChange={() => setOpenDialog(null)}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Confirmação Enviada</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            A sua solicitação foi enviada e será atendida brevemente!
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogAction className='cursor-pointer' onClick={() => window.location.href = "/"}>Ir para Página Inicial</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            {/* Dialog de erro */}
+            <AlertDialog open={openDialog === "error"} onOpenChange={() => setOpenDialog(null)}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Erro ao enviar confirmação</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Ocorreu um erro ao enviar a sua solicitação. Tente novamente mais tarde.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogAction className='cursor-pointer' onClick={() => setOpenDialog(null)}>Fechar</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 }

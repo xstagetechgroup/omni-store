@@ -61,7 +61,7 @@ export default function Navbar() {
     <nav className='w-full fixed top-0 flex justify-center items-start md:px-5 z-50'>
       <div className='max-w-[1280px] w-full flex justify-between items-center p-5 bg-white md:rounded-b-lg z-50 shadow-md'>
         {/* Logo */}
-        <Image width={120} height={100} alt='Omni Store Logo' src='/assets/5.png' />
+        <Link href="/"><Image width={120} height={100} alt='Omni Store Logo' src='/assets/5.png' /></Link>
 
         {/* Links - Desktop */}
         <div className='hidden md:flex gap-5 items-center justify-center'>
