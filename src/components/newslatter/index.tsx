@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 const NewslatterSection: React.FC = () => {
     return (
         <Container>
-            <div className='w-full flex flex-wrap md:flex-nowrap justify-between items-center px-10 rounded-xl bg-primary py-16 my-10'>
+            <div className='w-full flex flex-wrap md:flex-nowrap justify-between items-center px-10 rounded-xl bg-[#0F132A] py-16 my-10'>
                 <div className='flex flex-col justify-between items-start gap-10'>
                     <h1 className='text-white text-4xl font-semibold'>Pronto para receber <br /> nossos lançamentos?</h1>
                     

@@ -21,6 +21,14 @@ interface ProductPageProps {
     params: Promise<{ id: string }>;
 }
 
+type User = {
+    uid: string;
+    email: string;
+    name: string;
+    phone?: string;
+    address?: string;
+};
+
 export default function ProductPage({ params }: ProductPageProps) {
     const { id } = React.use(params); // Extrai o ID do produto da promise
     const productId = parseInt(id);
@@ -30,6 +38,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     const [showOptions, setShowOptions] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
 
     const router = useRouter();
 
@@ -39,6 +48,16 @@ export default function ProductPage({ params }: ProductPageProps) {
         const unsub = onAuthStateChanged(auth, (user) => {
             setIsLoggedIn(!!user);
         });
+        
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            try {
+                setUser(JSON.parse(storedUser));
+            } catch {
+                setUser(null);
+            }
+        }
+
         return () => unsub();
     }, []);
 
@@ -85,7 +104,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
     // Defina o número e a mensagem
     const whatsappNumber = "244937695529";
-    const message = `Olá *OmniBox*, gostaria de solicitar o serviço: 
+    const message = `Olá *OmniBox*, eu ${user?.name} gostaria de solicitar o serviço: 
     *Serviço*: ${product.title}
     *Plano:* ${selectedPlan?.title}
     *Preço Unitário:* ${selectedPlan?.price}

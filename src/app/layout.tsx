@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthProvider";
+import Navbar from "@/components/shared/navbar";
+import Footer from "@/components/shared/footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,7 +25,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
         <AuthProvider>
+          <Navbar />
           {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>
