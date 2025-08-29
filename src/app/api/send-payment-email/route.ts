@@ -8,19 +8,19 @@ export async function POST(req: Request) {
 
         // Configuração do transporter (exemplo com Gmail — substitua pelas suas credenciais SMTP)
         const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT),
-            secure: process.env.SMTP_PORT === "465", // true se 465
+            host: process.env.NEXT_PUBLIC_SMTP_HOST,
+            port: Number(process.env.NEXT_PUBLIC_SMTP_PORT),
+            secure: process.env.NEXT_PUBLIC_SMTP_PORT === "465", // true se 465
             auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS,
+                user: process.env.NEXT_PUBLIC_SMTP_USER,
+                pass: process.env.NEXT_PUBLIC_SMTP_PASS,
             },
         });
 
         // Monta o corpo do e-mail
         const mailOptions = {
-            from: `"Loja Virtual" <${process.env.SMTP_USER}>`,
-            to: process.env.ADMIN_EMAIL,
+            from: `"Loja Virtual" <${process.env.NEXT_PUBLIC_SMTP_USER}>`,
+            to: process.env.NEXT_PUBLIC_ADMIN_EMAIL,
             subject: "Novo Pedido - Pagamento Feito",
             html: `
                 <h2>Pagamento Realizado</h2>

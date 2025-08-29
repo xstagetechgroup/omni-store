@@ -15,7 +15,7 @@ import {
 import { TProduct } from "@/types/product";
 
 export default function ProductGrid() {
-    const itemsPerPage = 9;
+    const itemsPerPage = 16;
     const [currentPage, setCurrentPage] = useState(1);
     const [currentProducts, setCurrentProducts] = useState<TProduct[]>([]);
     const [loading, setLoading] = useState(false);
@@ -54,20 +54,20 @@ export default function ProductGrid() {
                     <Loader2 className="animate-spin w-8 h-8 text-gray-500" />
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {currentProducts.map((product) => (
                         <div key={product.id} className="group">
                             <Link href={`/produto/${product.id}`}>
-                                <div className="w-full flex justify-center items-center bg-slate-200 mb-4 rounded-lg aspect-square relative overflow-hidden cursor-pointer">
-                                    <div className="absolute top-4 right-4 text-base bg-white inline-block px-3 py-1 rounded-full mb-2 border border-gray-300">
+                                <div className="w-full shadow flex justify-center items-center bg-slate-200 mb-4 rounded-lg aspect-square relative overflow-hidden cursor-pointer">
+                                    <div className="absolute top-4 right-4 text-xs bg-white inline-block px-3 py-1 rounded-full mb-2 border border-gray-300">
                                         {product.category}
                                     </div>
                                     <Image
-                                        width={150}
-                                        height={150}
+                                        width={500}
+                                        height={500}
                                         alt={product.title}
-                                        src={product.image}
-                                        className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+                                        src={product.imageSecondary}
+                                        className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
                                     />
                                 </div>
                             </Link>
@@ -76,18 +76,18 @@ export default function ProductGrid() {
 
                             <div className="w-full flex justify-between items-center">
                                 <p className="text-gray-600 text-sm">
-                                    ⭐ {product.rating} ({product.reviews} Visualizações)
+                                    ⭐ {product.rating} ({product.reviews} Views)
                                 </p>
-                                <p className="font-bold text-xl mt-1">{Number(product.price).toLocaleString("pt-BR")} AKZ</p>
+                                <p className="font-bold text-base mt-1">{Number(product.price).toLocaleString("pt-BR")} AKZ</p>
                             </div>
 
                             <div className="flex gap-2 mt-3 justify-between items-center">
                                 <button className="p-3 border rounded-full cursor-pointer flex items-center justify-center">
-                                    <ShoppingCart />
+                                    <ShoppingCart className="size-4 text-black" />
                                 </button>
                                 <Link
                                     href={"/carrinho"}
-                                    className="px-4 py-3 text-white bg-black duration-300 rounded-full text-sm hover:bg-[#732DFF] cursor-pointer"
+                                    className="px-3 py-2 text-white bg-black duration-300 rounded-full text-sm hover:bg-[#732DFF] cursor-pointer"
                                 >
                                     Comprar Agora
                                 </Link>

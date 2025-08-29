@@ -15,19 +15,11 @@ import { useRouter } from "next/navigation";
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { app } from "@/lib/firebaseConfig";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-
+import { User } from "@/types/user";
 
 interface ProductPageProps {
     params: Promise<{ id: string }>;
 }
-
-type User = {
-    uid: string;
-    email: string;
-    name: string;
-    phone?: string;
-    address?: string;
-};
 
 export default function ProductPage({ params }: ProductPageProps) {
     const { id } = React.use(params); // Extrai o ID do produto da promise
@@ -48,7 +40,6 @@ export default function ProductPage({ params }: ProductPageProps) {
         const unsub = onAuthStateChanged(auth, (user) => {
             setIsLoggedIn(!!user);
         });
-        
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             try {
@@ -79,7 +70,6 @@ export default function ProductPage({ params }: ProductPageProps) {
             setOpenDialog(true); // se não estiver logado, mostra alerta
             return;
         }
-
         router.push(`/pagamento/express?productTitle=${product.title}&plan=${encodeURIComponent(selectedPlan.title)}&price=${encodeURIComponent(selectedPlan.price)}&qty=${quantity}`);
     };
 
@@ -90,17 +80,13 @@ export default function ProductPage({ params }: ProductPageProps) {
             setOpenDialog(true); // se não estiver logado, mostra alerta
             return;
         }
-
         router.push(`/pagamento/baidireto?productTitle=${product.title}&plan=${encodeURIComponent(selectedPlan.title)}&price=${encodeURIComponent(selectedPlan.price)}&qty=${quantity}`);
     };
-
-
 
     const handleLoginRedirect = () => {
         setOpenDialog(false);
         router.push("/login");
     };
-
 
     // Defina o número e a mensagem
     const whatsappNumber = "244937695529";

@@ -16,7 +16,7 @@ export default function Home() {
         </div>
       </div>
       <Container>
-        <div className="min-h-screen flex flex-col md:flex-row py-10">
+        <div className="min-h-screen flex flex-col gap-5 md:flex-row py-10">
           {/* Sidebar */}
           <aside className="hidden lg:block flex-shrink-0">
             <CategorySidebar />
