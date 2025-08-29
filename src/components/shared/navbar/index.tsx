@@ -124,7 +124,7 @@ export default function Navbar() {
                           key={p.id}
                           className="flex items-center gap-3 px-4 py-3 rounded-sm hover:bg-gray-100 cursor-pointer"
                         >
-                          <img src={p.image} alt={p.title} className="w-10 h-10 object-cover rounded-md" />
+                          <Image width={100} height={100} src={p.image} alt={p.title} className="w-10 h-10 object-cover rounded-md" />
                           <div>
                             <p className="text-sm font-medium">{p.title}</p>
                             <p className="text-xs text-gray-500">${p.price}</p>

@@ -1,7 +1,5 @@
 import React from 'react';
 import Container from '../shared/container';
-import { Search } from 'lucide-react';
-import { Button } from '../ui/button';
 
 export default function SearchForm() {
     return (

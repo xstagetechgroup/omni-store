@@ -1,5 +1,5 @@
 import Container from '@/components/shared/container';
-import { Eye, Goal, Star, Target } from 'lucide-react';
+import { Eye, Goal, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
